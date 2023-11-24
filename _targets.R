@@ -55,13 +55,17 @@ list(
                file.path(data_dir, 
                          "Community Participation/Communities State of London data.xlsx"),
                format = "file"),
-    tar_target(run_comm, command = run_communities_updates(comm_fl, db_fl)),
+    tar_target(
+        comm_resdash_fl,
+        "Q:/Teams/D&PA/Social Policy/COVID-19 data/Recovery Dashboard data/BF data for Resilience Dashboard March 2021.xlsx",
+        format = "file"),
+    tar_target(run_comm, command = run_communities_updates(comm_fl, comm_resdash_fl, db_fl)),
     ### Transport and Infrastructure
     tar_target(trans_inf_fl, 
                file.path(data_dir, 
                          "Transport and Infrastructure/Transport & Infrastructure.xlsx"),
                format = "file"),
-    tar_target(run_trans_inf, run_transport_infrastructure_updates(trans_inf_fl, db_fl))
+    tar_target(run_trans_inf, run_transport_infrastructure_updates(trans_inf_fl, db_fl)),
     
     ### Income/Deprivation Chapter ###
     # tar_target(dep_fl, 
@@ -90,7 +94,7 @@ list(
     # tar_target(run_econ, command = run_business_labour_updates(ec_bus_fl, dbfl)),
     # tar_target(run_jobs_skills, command = run_jobs_skills_updates(jobs_skills_fl, dbfl)),
     ### Demography ###
-    # tar_target(dem_fl, file.path(data_dir,"Demography/demography_chapter_may23.xlsx"), format = "file"),
-    # tar_target(run_dem, command = run_communities_updates(comm_fl, dbfl))
+    tar_target(dem_fl, file.path(data_dir,"Demography/demography_chapter_nov23.xlsx"), format = "file"),
+    tar_target(run_dem, command = run_communities_updates(comm_fl, dbfl))
     
 )

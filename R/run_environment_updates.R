@@ -66,5 +66,18 @@ run_environment_updates <- function(dt_fl, dbfl = "") {
             insert_db(log = log, excfl = xfl)
     }, error = function(e){error_log(e, "SoL - Env")}  )
     
+    #### Recycling ####
+    tryCatch({
+        xlsx_cells(dt_fl, "Recycling rate") |>
+            filter(row > 5) |>
+            behead("N", xvarchar) |>
+            behead("W", "yvllb") |>
+            filter(!is.na(xvarchar))  |>
+            # select(xvardt, yvllb, yval = numeric)
+            mutate(dataset = "rcyc", xwhich = 1, xvardt = NA, text = "",
+                   yval = numeric) %>%
+            insert_db(log = log, excfl = xfl)
+    })
+    
     
 }

@@ -16,10 +16,10 @@ insert_db <- function(dat, log = "", excfl = "") {
         stop(glue("ERROR. NO DATA {excfl}"))
     } else if(!all(clmns %in% names(dat))) {
         dtnms <- paste(names(dat), collapse = "|") 
-        expnms <- paste(clnms, collapse = "|") 
-        mss <- names(dat)[which(!names(dat) %in% clnms)]
+        expnms <- paste(clmns, collapse = "|") 
+        mss <- clmns[which(!clmns %in% names(dat))] #names(dat)[which(!names(dat) %in% clmns)]
         message(glue("In data: {dtnms}"))
-        message(glue("Expecting: {dtnms}"))
+        message(glue("Expecting: {clmns}"))
         message(glue("Missing: {paste(mss, collapse = '|')}"))
         stop("ERROR. You need all the columns")
     } else {

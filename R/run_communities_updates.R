@@ -13,7 +13,9 @@ cm_fl <- file.path("C:/Users/joheywood/Greater London Authority/",
                    "IU - State of London report/Version 3 (June 2023)/Data/",
                    "Community Participation/Communities State of London data.xlsx")
 
-run_communities_updates <- function(cm_fl, dbfl) {
+res_dash <- "Q:/Teams/D&PA/Social Policy/COVID-19 data/Recovery Dashboard data/BF data for Resilience Dashboard March 2021.xlsx"
+
+run_communities_updates <- function(cm_fl, res_dash, dbfl) {
     log <- ""
     if(!file.exists(dbfl)) {
         print("no db file")
@@ -177,4 +179,16 @@ run_communities_updates <- function(cm_fl, dbfl) {
             insert_db(log, "SoL - Communities")
         
     }, error = function(e){error_log(e, "SoL - Communities")})
+    
+    ##### Neighbourhood cohesion ####
+    tryCatch({
+        xlsx_cells(res_dash, "12") |>
+            filter(col != 3) |>
+            behead("N", xvardt) |>
+            filter(!is.na(xvardt)) |>
+            select(xvardt, yval = numeric) |>
+            mutate(dataset = "coh", xwhich = 2, xvarchar = "", text = "", yvllb = "" ) |>
+            insert_db(log, "SoL - Communities")
+            
+    })
 }

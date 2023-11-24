@@ -95,9 +95,9 @@ chart_sqlite_communities <- function(cn) {
     # save_for_SoL("sol_culture", section = sctn, cnn = cn, ordr = sprt)
     # save_for_SoL("sol_sport", section = sctn, cnn = cn, ordr = sprt) 
     save_chart("coh", conn = cn)
-    save_chart("htcrm", conn = cn)
+    # save_chart("htcrm", conn = cn)
     save_chart("sol_phtcrm", conn = cn)
-    save_chart("sol_o2mobility", conn = cn)
+    # save_chart("sol_o2mobility", conn = cn)
     save_chart("sol_hlp", conn = cn)
     save_chart("sol_insttrst", conn = cn)
 }
@@ -106,7 +106,7 @@ chart_sqlite_communities <- function(cn) {
 chart_sqlite_trans_infr <- function(cn) {
     # save_for_SoL("tfl",   mvav = 7, section = sctn, cnn = cn)
     save_chart("sol_modesplit", conn = cn)
-    save_chart("tfl_wlkcyc", conn = cn)
+    # save_chart("tfl_wlkcyc", conn = cn)
     save_chart("sol_actvtrav", conn = cn)
     save_chart("sol_rd_safety", conn = cn)
     save_chart("sol_bus_safety", conn = cn)
