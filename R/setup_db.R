@@ -7,10 +7,10 @@ library(readxl)
 setup_db <- function(fl, clear = TRUE, mtd = meta_file) {
     closeAllConnections()
     print(paste0("FILE EXISTS: ", file.exists(fl)))
-    if(file.exists(fl)) stopifnot(file.access(fl) == 0)
+    if (file.exists(fl)) stopifnot(file.access(fl) == 0)
     stopifnot(file.access(mtd) == 0)
-    if(clear == TRUE) {
-        if(file.exists(fl)) {
+    if (clear == TRUE) {
+        if (file.exists(fl)) {
             file.remove(fl)
         } else {
             print("File does not exist")
@@ -31,7 +31,7 @@ setup_db <- function(fl, clear = TRUE, mtd = meta_file) {
     "
     dbSendQuery(dbcon, ind_sql)
     dbDisconnect(dbcon)
-    Sys.setenv(SOL_DB_PATH=fl)
+    Sys.setenv(SOL_DB_PATH = fl)
     fl
 }
 
@@ -42,5 +42,3 @@ refresh_meta <- function() {
     dbDisconnect(dbcon)
     TRUE
 }
-
-
