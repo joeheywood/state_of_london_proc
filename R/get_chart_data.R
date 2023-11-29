@@ -13,8 +13,11 @@ library(glue)
 library(RSQLite)
 
 ## 
-get_obs_chart <- function(dtst, opts, mopts = list()) {
-    dat <- get_data_from_sqlite(dtst, "data/sol_v4.db")
+get_obs_chart <- function(dtst, opts, mopts = list(), pp = list()) {
+    dat <- get_data_from_sqlite(dtst, "data/sol_v4.db") 
+    if("orderxd" %in% names(pp)) {
+        dat$d <- orderxd(dat$d, pp$orderxd)
+    }
     chart_opts <- c("chrt")
     tickf <- ifelse(dat$m$tickformat %in% "%", ".0%", 
                     ifelse(is.na(dat$m$tickformat),".1f", dat$m$tickformat))
@@ -27,6 +30,14 @@ get_obs_chart <- function(dtst, opts, mopts = list()) {
         stack= dat$m$stack,
         high = dat$m$highlight
     )
+    if(dat$m$stack %in% TRUE) {
+        optsx$stack <- TRUE
+        optsx$stackgroup <- "stack"
+        optsx$convert_wide <- TRUE
+    } else {
+        optsx$stackgroup <- "group"
+        optsx$stack <- FALSE
+    }
     mopts$ttl <- dat$m$charttitle
     mopts$sol_chapter <- dat$m$sol_chapter
     mopts$sol_sub <- dat$m$sol_subsection
@@ -39,6 +50,16 @@ get_obs_chart <- function(dtst, opts, mopts = list()) {
     
     list(d = dat$d, co = optsx, m = mopts, chart = chrt)
     
+}
+
+
+orderxd <- function(df, xfact) {
+    if(is.null(xfact)) {
+        df
+    } else {
+        bbx <- factor(df$xd, levels = xfact)
+        df <- df[order(bbx), ]
+    }
 }
 
 

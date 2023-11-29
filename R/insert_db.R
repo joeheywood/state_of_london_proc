@@ -38,6 +38,9 @@ insert_db <- function(dat, log = "", excfl = "") {
             dat$xvardt <- format(dat$xvardt, "%Y-%m-%d")
         } else {
             xmsg <- glue("Xaxis Character: {toString(unique(dat$xvarchar))}\n\n")
+            if(all(is.numeric(dat$xvarchar)) && all(dat$xvarchar %in% 1990:2040)) {
+                dat$xvarchar <- as.character(round(dat$xvarchar))
+            }
         }
         
         ##### Adds data here ####

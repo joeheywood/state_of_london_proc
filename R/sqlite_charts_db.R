@@ -3,8 +3,12 @@ library(dplyr)
 library(tidyr)
 library(glue)
 library(stringr)
-
+library(rsvg)
+library(r2d3svg)
 source("R/get_chart_data.R")
+
+shrpnt_root <- file.path("C:/Users/joheywood/Greater London Authority/",
+                    "IU - State of London report/Version 4 (January 2024)/Data/")
 
 run_charts_db <- function() {
     fl <- "data/sol_v4_charts.db"
@@ -21,7 +25,7 @@ run_charts_db <- function() {
     chart_sqlite_environment(cn)
     chart_sqlite_communities(cn)
     chart_sqlite_trans_infr(cn)
-    # chart_sqlite_demography(cn)
+    chart_sqlite_demography(cn)
     # chart_sqlite_inc_pov_dest(cn)  
     # chart_sqlite_health_wellbeing(cn)
     # chart_sqlite_crime(cn)
@@ -33,10 +37,38 @@ run_charts_db <- function() {
     
 }
 
-save_chart <- function(dtst, opts = list(), mopts = list(), conn) {
+convert_all_to_svg <- function() {
+    fls <- dir("data/RDA", full.names = TRUE)
+    map_lgl(fls, convert_to_svg)
+    
+}
+
+convert_to_svg <- function(fl) {
+    tryCatch({
+        load(fl)
+        shrpnt <- file.path(shrpnt_root, d$m$sol_chapter, "svg")
+        if(!dir.exists(shrpnt)) dir.create(shrpnt)
+        ttl <- d$m$ttl |> 
+            str_replace_all("[:/]", "") |>
+            trimws()
+        
+        save_d3_svg(d$chart, file = glue("{shrpnt}/{ttl}.svg"),  delay = 2 )
+        remove_div(glue("{shrpnt}/{ttl}.svg"))
+        print(glue("Chart added: {ttl}"))
+        TRUE
+        
+    }, error = function(e) {
+        print(glue("Didn't work for ", fl))
+        print(e)
+        FALSE
+    }  )
+}
+
+save_chart <- function(dtst, opts = list(), mopts = list(), preproc = list(), conn) {
     tryCatch({
         ### combine opts, mopts above with defaults?
-        d <- get_obs_chart(dtst, opts)# add mopts here eventually
+        d <- get_obs_chart(dtst, opts, pp = preproc)# add mopts here eventually
+        save(d, file = glue("data/RDA/{d$m$ttl}"))
         d$d <- d$d |> rename(dtst = dataset)
         chart_meta <- data.frame(dtst = dtst,
                                  chartmeta = as.character(
@@ -71,7 +103,8 @@ save_chart <- function(dtst, opts = list(), mopts = list(), conn) {
     
 }
 
-chart_sqlite_environment <- function(conn) {
+
+chart_sqlite_environment <- function(cn) {
     save_chart("bio", conn = cn)
     save_chart("sol_greenhouse", conn = cn)
     save_chart("epc", conn = cn)
@@ -90,10 +123,11 @@ chart_sqlite_communities <- function(cn) {
     save_chart("nghbtrst", conn = cn)
     save_chart("sol_nghb", conn = cn)
     save_chart("infloc", conn = cn)
-    # sprt <- c("__by_xd__", "2018-19", "2021-22", "2022 (Feb)", "2022 (May)", 
-    #           "2022 (Aug)", "2022 (Nov)", "2023 (Feb)")
-    # save_for_SoL("sol_culture", section = sctn, cnn = cn, ordr = sprt)
-    # save_for_SoL("sol_sport", section = sctn, cnn = cn, ordr = sprt) 
+    ordr <- c( "2018-19", "2021-22", "2022 (Feb)", "2022 (May)", "2022 (Aug)", 
+               "2022 (Nov)", "2023 (Feb)", "2023 (May)", "2023 (Aug)", 
+               "2023 (Nov)" )
+    save_chart("sol_culture", preproc = list(orderxd = ordr), conn = cn)
+    save_chart("sol_sport", preproc = list(orderxd = ordr), conn = cn)
     save_chart("coh", conn = cn)
     # save_chart("htcrm", conn = cn)
     save_chart("sol_phtcrm", conn = cn)
@@ -120,6 +154,31 @@ chart_sqlite_trans_infr <- function(cn) {
 }
 
 
+
+chart_sqlite_demography <- function(cn, sctn = "Demography") {
+    # save_for_SoL("sol_lpop", 
+    #              leg = list(o = "top"),
+    #              forcecol = list(`ONS mid-year estimates` = "#6da7de",
+    #                              `GLA estimates`= "#9e0059",
+    #                              `Census estimates` = "#AAAAAA"),
+    #              mrkrs = list("Census estimates"), 
+    #              # section = "", retChart = TRUE)
+    #              section = sctn, cnn = cn) ## 
+    # 
+    # cob_or <- c("Europe", "Africa", "Middle East and Asia", 
+    #             "The Americas and the Caribbean", "Other")
+    # save_for_SoL("sol_cob", 
+    #              mrkrs = list("all_categories"), 
+    #              ordr = cob_or, section = sctn, cnn = cn) ## 
+    # 
+    # save_for_SoL("sol_cob_uk", mrkrs = list("all_categories"), 
+    #              section = sctn, cnn = cn) ##
+    save_chart("sol_ann_births", conn = cn) ##
+    save_chart("sol_mcob_uk", conn = cn) ##
+    save_chart("sol_mcob", conn = cn) ##
+}
+
+
 # add_to_sqlite <- function(d, cm, m, uu, conn) {
 #     dtst <- cm$dtst[1]
 #     # print(dtst)
@@ -135,3 +194,12 @@ chart_sqlite_trans_infr <- function(cn) {
 #     
 # }
 # 
+
+
+remove_div <- function(fl) {
+    code <- readLines(fl) %>% paste(collapse = "")
+    code <- str_replace(code, "^<div[a-z =\"]+>", "")
+    code <- str_replace(code, "</div>$", "")
+    writeLines(code, fl)
+    TRUE
+}

@@ -122,18 +122,20 @@ run_communities_updates <- function(cm_fl, res_dash, dbfl) {
     #### Participation in Culture ####
     tryCatch({
         part_dat %>%
-            filter(indicator == "Participation in culture") %>%
+            filter(indicator == "Participation in culture") |>
             mutate(dataset = "sol_culture", xwhich = 1, xvardt = NA, 
-                   yvllb = "", text = "") %>%
+                   yvllb = "", text = "") |>
+            filter(!is.na(yval)) |>
             insert_db(log, "SoL - Communities")
     }, error = function(e){error_log(e, "SoL - Communities")})
     
     #### Participation in Sport ####
     tryCatch({
         part_dat %>%
-            filter(indicator == "Participation in sport ") %>%
+            filter(indicator == "Participation in sport ") |>
             mutate(dataset = "sol_sport", xwhich = 1, xvardt = NA, 
-                   yvllb = "", text = "") %>%
+                   yvllb = "", text = "") |>
+            filter(!is.na(yval)) |>
             insert_db(log, "SoL - Communities")
     }, error = function(e){error_log(e, "SoL - Communities")})
     

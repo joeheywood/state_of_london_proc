@@ -25,7 +25,7 @@ run_population_updates <- function(dt_fl, dbfl = "") {
     log <- ""
     if(!file.exists(dbfl)) print("NO DB FILE")
     
-    xfl <- "insert_sol_demography"
+    xfl <- as.character(dt_fl)
     excel_sheets(dt_fl)
     
     #### Fig 1. London Population #### 

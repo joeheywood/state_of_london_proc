@@ -95,6 +95,6 @@ list(
     # tar_target(run_jobs_skills, command = run_jobs_skills_updates(jobs_skills_fl, dbfl)),
     ### Demography ###
     tar_target(dem_fl, file.path(data_dir,"Demography/demography_chapter_nov23.xlsx"), format = "file"),
-    tar_target(run_dem, command = run_communities_updates(comm_fl, dbfl))
+    tar_target(run_dem, command = run_population_updates(dem_fl, db_fl))
     
 )

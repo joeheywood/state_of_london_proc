@@ -1,31 +1,39 @@
 name|type|data|command|depend|seed|path|time|size|bytes|format|repository|iteration|parent|children|seconds|warnings|error
-chart_sqlite_communities|function|a023f6433e23d43f|||||||||||||||
-chart_sqlite_environment|function|f5539c6054a60923|||||||||||||||
-chart_sqlite_trans_infr|function|95065a8f333ea27e|||||||||||||||
+.Random.seed|object|9b124662f65f0b44|||||||||||||||
+chart_sqlite_communities|function|0556f86885c0155f|||||||||||||||
+chart_sqlite_demography|function|e2e52a37ff361d98|||||||||||||||
+chart_sqlite_environment|function|fe540ff383589a76|||||||||||||||
+chart_sqlite_trans_infr|function|416b3a4e3265a97f|||||||||||||||
 cm_fl|object|3664fa3cf37a725f|||||||||||||||
-comm_fl|stem|d32a9d57c4b33459|d7d0934ec632b4dc|4fe35801c1aaed50|-1536816439|C:/Users/joheywood/Greater London Authority//IU - State of London report/Version 4 (January 2024)/Data/Community Participation/Communities State of London data.xlsx|t19685.3905208333s|cdc52f2d277cb7fb|463096|file|local|vector|||0||
-comm_resdash_fl|stem|48bb13492b1b67a5|b520b4c9f4c3e2e1|ef46db3751d8e999|2119097741|Q:/Teams/D&PA/Social Policy/COVID-19 data/Recovery Dashboard data/BF data for Resilience Dashboard March 2021.xlsx|t19576.4925768822s|bd152b888c5f4de2|63472|file|local|vector|||0||
+comm_fl|stem|9d7da2a5b3380c83|d7d0934ec632b4dc|4fe35801c1aaed50|-1536816439|C:/Users/joheywood/Greater London Authority//IU - State of London report/Version 4 (January 2024)/Data/Community Participation/Communities State of London data.xlsx|t19685.5769675926s|f9883467d55fb5d4|463516|file|local|vector|||0||
+comm_resdash_fl|stem|4946dc26f3163322|b520b4c9f4c3e2e1|ef46db3751d8e999|2119097741|Q:/Teams/D&PA/Social Policy/COVID-19 data/Recovery Dashboard data/BF data for Resilience Dashboard March 2021.xlsx|t19685.5548765054s|411bc473a6dffdf9|63500|file|local|vector|||0||
+convert_all_to_svg|function|b32a03302d5ba154|||||||||||||||
 convert_q_date|function|afaae58a0e669891|||||||||||||||
+convert_to_svg|function|56d101213a34042c|||||||||||||||
 data_dir|object|76ea8a948a9b0d25|||||||||||||||
-db_fl|stem|284874f38ff036cb|7a50244868dd4842|ef46db3751d8e999|-1255456934|data/sol_v4.db|t19685.467096405s|6b8830d67c8ffbb5|86016|file|local|vector|||0.67||
+db_fl|stem|676de6b9cb7553ac|7a50244868dd4842|ef46db3751d8e999|-1255456934|data/sol_v4.db|t19690.4316854038s|07507bbcff0f879e|204800|file|local|vector|||0.38||
+dem_fl|stem|c81c6bc61e4f47b7|51b3150d438e579c|4fe35801c1aaed50|-115630510|C:/Users/joheywood/Greater London Authority//IU - State of London report/Version 4 (January 2024)/Data/Demography/demography_chapter_nov23.xlsx|t19684.4343518519s|3e42eeb4dc4bf7dd|53309|file|local|vector|||0||
 dt_fl|object|431840952103cf0f|||||||||||||||
-env_fl|stem|95b4f53ab94188fd|d047d28278924248|4fe35801c1aaed50|814821019|C:/Users/joheywood/Greater London Authority//IU - State of London report/Version 4 (January 2024)/Data/Environment/Environment data v4.xlsx|t19669.4088888889s|5cd6891b9dc83f3c|342999|file|local|vector|||0.56||
+env_fl|stem|95b4f53ab94188fd|d047d28278924248|4fe35801c1aaed50|814821019|C:/Users/joheywood/Greater London Authority//IU - State of London report/Version 4 (January 2024)/Data/Environment/Environment data v4.xlsx|t19669.4088888889s|5cd6891b9dc83f3c|342999|file|local|vector|||0.39||
 error_log|function|ed50f9343fcc75ba|||||||||||||||
-get_chart_from_observable|function|ec7f0218bb30fce1|||||||||||||||
 get_data_from_sqlite|function|d8063e6930c90ad8|||||||||||||||
-get_obs_chart|function|3e0b698868acde1a|||||||||||||||
-insert_db|function|079286878632c079|||||||||||||||
-refresh_meta|function|e97717dfb5889fb0|||||||||||||||
+get_obs_chart|function|7b3af0ef6b062b35|||||||||||||||
+insert_db|function|1226d29a1402ceb9|||||||||||||||
+orderxd|function|c5d3ba6249dea677|||||||||||||||
+refresh_meta|function|a4be049a327c1391|||||||||||||||
+remove_div|function|a9073d6645d080b5|||||||||||||||
 res_dash|object|508400e254a941d7|||||||||||||||
-run_charts_db|function|121b82a321746891|||||||||||||||
-run_comm|stem|818549bf81b5a73a|4a3ef4152c8c63fb|6f026eea47e91240|-614008771||t19685.4673885787s|97452b5a3d70b0b8|49|rds|local|vector|||3.61||
-run_communities_updates|function|b21a5408c672fb79|||||||||||||||
-run_env|stem|818549bf81b5a73a|90d2bcd44dcf502f|7f63b89fec6c2404|973455256||t19685.4673463344s|97452b5a3d70b0b8|49|rds|local|vector|||2.6||
-run_environment_updates|function|99cbc9347ff8b36c|||||||||||||||
-run_trans_inf|stem|818549bf81b5a73a|55f4d36c58985e57|306e080f698cf4b3|-2032176680||t19685.4674276459s|97452b5a3d70b0b8|49|rds|local|vector|||3.35||
-run_transport_infrastructure_updates|function|e579e75c43c0d949|||||||||||||||
-save_chart|function|f09ea91932bb9823|||||||||||||||
+run_charts_db|function|f487835c1ab2fd2d|||||||||||||||
+run_comm|stem|818549bf81b5a73a|4a3ef4152c8c63fb|7d7a115a1f174249|-614008771||t19690.4397966152s|97452b5a3d70b0b8|49|rds|local|vector|||3.89||
+run_communities_updates|function|249169d0ccb6360a|||||||||||||||
+run_dem|stem|818549bf81b5a73a|74380d59215e49dc|413c892b63468478|-1003074870||t19690.4397511293s|97452b5a3d70b0b8|49|rds|local|vector|||1.14||
+run_env|stem|818549bf81b5a73a|90d2bcd44dcf502f|4debf3e4c0be15dd|973455256||t19690.4397375298s|97452b5a3d70b0b8|49|rds|local|vector|||2.81||
+run_environment_updates|function|ad5f8fc747b9592e|||||||||||||||
+run_population_updates|function|a16b5330ef2b653a|||||||||||||||
+run_trans_inf|stem|818549bf81b5a73a|55f4d36c58985e57|ce2a7f4a7d2c9cac|-2032176680||t19690.4398392038s|97452b5a3d70b0b8|49|rds|local|vector|||3.66||
+run_transport_infrastructure_updates|function|c4e4ed565b002dab|||||||||||||||
+save_chart|function|831cd8cbee2b3351|||||||||||||||
 setup_db|function|9fa0492f290088fc|||||||||||||||
-trans_inf_fl|stem|6867361a68031ee9|6c15d3702e2be67a|4fe35801c1aaed50|790357002|C:/Users/joheywood/Greater London Authority//IU - State of London report/Version 4 (January 2024)/Data/Transport and Infrastructure/Transport & Infrastructure.xlsx|t19671.5196990741s|973fa1b733b61a9a|879956|file|local|vector|||0||
+shrpnt_root|object|76ea8a948a9b0d25|||||||||||||||
+trans_inf_fl|stem|f22bca2684874b5e|6c15d3702e2be67a|4fe35801c1aaed50|790357002|C:/Users/joheywood/Greater London Authority//IU - State of London report/Version 4 (January 2024)/Data/Transport and Infrastructure/Transport & Infrastructure.xlsx|t19689.714849537s|27b1717f3677e517|879824|file|local|vector|||0||
 upload_charts_db_to_git|function|cf0992f3479eb583|||||||||||||||
-upload_db_to_git|function|07fc66b4119ba638|||||||||||||||

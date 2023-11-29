@@ -37,8 +37,9 @@ setup_db <- function(fl, clear = TRUE, mtd = meta_file) {
 
 refresh_meta <- function() {
     meta <- vroom("data/meta.csv")
+    fl <- "data/sol_v4.db"
     dbcon <- dbConnect(RSQLite::SQLite(), fl)
-    dbWriteTable(dbcon, "mtd", meta, overrwrite = TRUE)
+    dbWriteTable(dbcon, "mtd", meta, overwrite = TRUE)
     dbDisconnect(dbcon)
     TRUE
 }
