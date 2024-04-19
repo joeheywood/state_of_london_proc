@@ -2,6 +2,20 @@ library(RSQLite)
 library(glue)
 library(cli)
 
+
+insert_db_aq <- function(dat, log, excfl) {
+    message("... sqlite AQ ...")
+    sqlite_dpth <- "data/sol_v4.db"
+    conn <- dbConnect(SQLite(), sqlite_dpth)
+    qryn2 <- dbSendQuery(conn = conn, "DELETE FROM ind_dat WHERE dataset = 'aq_no2'")
+    qrypm10 <- dbSendQuery(conn = conn, "DELETE FROM ind_dat WHERE dataset = 'aq_pm10'")
+    qrypm25 <- dbSendQuery(conn = conn, "DELETE FROM ind_dat WHERE dataset = 'aq_pm25'")
+    dbAppendTable(conn, "ind_dat", dat)
+    dbDisconnect(conn)
+    TRUE
+    
+}
+
 # Function to add data to database for a given dataset ####
 # Args: dat (df) data to add for a given dataset
 #       log (character) file path to send messages/warnings to (console if "")

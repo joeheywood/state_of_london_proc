@@ -10,12 +10,12 @@ library(stringr)
 # library(vroom)
 
 cm_fl <- file.path("C:/Users/joheywood/Greater London Authority/",
-                   "IU - State of London report/Version 3 (June 2023)/Data/",
+                   "IU - State of London report/Version 4 (January 2024)/Data/",
                    "Community Participation/Communities State of London data.xlsx")
 
 res_dash <- "Q:/Teams/D&PA/Social Policy/COVID-19 data/Recovery Dashboard data/BF data for Resilience Dashboard March 2021.xlsx"
 
-run_communities_updates <- function(cm_fl, res_dash, dbfl) {
+run_communities_updates <- function(cm_fl, res_dash, htcrm_fl, dbfl) {
     log <- ""
     if(!file.exists(dbfl)) {
         print("no db file")
@@ -58,7 +58,8 @@ run_communities_updates <- function(cm_fl, res_dash, dbfl) {
         read_excel(cm_fl, "VoterReg", skip = 17) %>% 
             select(xvarchar = 1, England, London) %>%
             pivot_longer(-xvarchar, names_to = "yvllb", values_to = "yval") %>%
-            mutate(dataset = "votereg", xwhich = 1, xvardt = NA,  text = "") %>%
+            mutate(dataset = "votereg", xwhich = 1, xvardt = NA, text = "") %>%
+            filter(!is.na(xvarchar)) |>
             insert_db(log, "SoL - Communities")
     }, error = function(e){error_log(e, "SoL - Communities")})
     
@@ -191,6 +192,20 @@ run_communities_updates <- function(cm_fl, res_dash, dbfl) {
             select(xvardt, yval = numeric) |>
             mutate(dataset = "coh", xwhich = 2, xvarchar = "", text = "", yvllb = "" ) |>
             insert_db(log, "SoL - Communities")
-            
-    })
+    }, error = function(e){error_log(e, "SoL - Communities")})
+    
+    ##### Footfall ####
+    tryCatch({
+        read_excel(cm_fl, "Footfall") |>
+            pivot_longer(-Month, names_to = "yvllb", values_to = "yval") |>
+            mutate(dataset = "sol_footfall", xwhich = 2, xvarchar = "", 
+                   xvardt = format(Month, "%Y-%m-%d"), text = "") |>
+            insert_db(log, "SoL - Communities")
+    }, error = function(e){error_log(e, "SoL - Communities")})
+    
+    
+    #### Hate Crime ####
+    tryCatch({
+        vroom(htcrm_fl) |> insert_db(log, "SoL - Communities")
+    }, error = function(e){error_log(e, "SoL - Communities")})
 }

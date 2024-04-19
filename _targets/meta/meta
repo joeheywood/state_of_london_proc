@@ -1,39 +1,96 @@
 name|type|data|command|depend|seed|path|time|size|bytes|format|repository|iteration|parent|children|seconds|warnings|error
-.Random.seed|object|9b124662f65f0b44|||||||||||||||
-chart_sqlite_communities|function|0556f86885c0155f|||||||||||||||
-chart_sqlite_demography|function|e2e52a37ff361d98|||||||||||||||
-chart_sqlite_environment|function|fe540ff383589a76|||||||||||||||
-chart_sqlite_trans_infr|function|416b3a4e3265a97f|||||||||||||||
-cm_fl|object|3664fa3cf37a725f|||||||||||||||
-comm_fl|stem|9d7da2a5b3380c83|d7d0934ec632b4dc|4fe35801c1aaed50|-1536816439|C:/Users/joheywood/Greater London Authority//IU - State of London report/Version 4 (January 2024)/Data/Community Participation/Communities State of London data.xlsx|t19685.5769675926s|f9883467d55fb5d4|463516|file|local|vector|||0||
-comm_resdash_fl|stem|4946dc26f3163322|b520b4c9f4c3e2e1|ef46db3751d8e999|2119097741|Q:/Teams/D&PA/Social Policy/COVID-19 data/Recovery Dashboard data/BF data for Resilience Dashboard March 2021.xlsx|t19685.5548765054s|411bc473a6dffdf9|63500|file|local|vector|||0||
-convert_all_to_svg|function|b32a03302d5ba154|||||||||||||||
-convert_q_date|function|afaae58a0e669891|||||||||||||||
-convert_to_svg|function|56d101213a34042c|||||||||||||||
+.Random.seed|object|1f3e5fdedf787e62|||||||||||||||
+aq_fl|stem|a63183923d42f48b|e284b2ab54cc79ea|4fe35801c1aaed50|69007036|C:/Users/joheywood/Greater London Authority//IU - State of London report/Version 4 (January 2024)/Data/Environment/airquality_data.csv|t19695.4293287037s|e1dfb41c78c9d2ed|112894|file|local|vector|||0||
+chart_econ|function|d413d830af6a2fde|||||||||||||||
+chart_health_wellbeing|function|bb707abc9bdbb80f|||||||||||||||
+chart_housing|function|66461623024ee646|||||||||||||||
+chart_sqlite_communities|function|3da2c71ea38448ea|||||||||||||||
+chart_sqlite_crime|function|3a0097f84588aba8|||||||||||||||
+chart_sqlite_demography|function|99bd40b5bfc280ac|||||||||||||||
+chart_sqlite_environment|function|c884b7121892e072|||||||||||||||
+chart_sqlite_inc_dep|function|d7ddcb4589917e33|||||||||||||||
+chart_sqlite_trans_infr|function|05d1aeb37112ecf7|||||||||||||||
+chart_sqlite_yp_education|function|882e08c8b5828409|||||||||||||||
+cm_fl|object|90a59030f620f5f8|||||||||||||||
+comm_fl|stem|5ef45b95558472ee|d7d0934ec632b4dc|4fe35801c1aaed50|-1536816439|C:/Users/joheywood/Greater London Authority//IU - State of London report/Version 4 (January 2024)/Data/Community Participation/Communities State of London data.xlsx|t19767.4486805556s|79d2f38ef9d6508d|473793|file|local|vector|||0||
+comm_resdash_fl|stem|9ef9eb967ebb336f|b520b4c9f4c3e2e1|ef46db3751d8e999|2119097741|Q:/Teams/D&PA/Social Policy/COVID-19 data/Recovery Dashboard data/BF data for Resilience Dashboard March 2021.xlsx|t19773.3847712007s|e5fb5809fefe8a97|63520|file|local|vector|||0||
+convert_all_to_svg|function|a63f3992e527d7e4|||||||||||||||
+convert_q_date|function|177b9e540524d3d3|||||||||||||||
+convert_to_svg|function|aadddad8063d560a|||||||||||||||
+crm_fl|stem|e07c8cdf494c188c|5f558f033d2d26de|4fe35801c1aaed50|-718396012|C:/Users/joheywood/Greater London Authority//IU - State of London report/Version 4 (January 2024)/Data/Crime and Safety/Crime and Safety Chapter - November 2023 - Data File.xlsx|t19782.4509490741s|21f337e69dad11d3|160840|file|local|vector|||0.01||
+cyp_fl|stem|770e062b4cfca2af|4baa8c1e0fabdad1|4fe35801c1aaed50|146953949|C:/Users/joheywood/Greater London Authority//IU - State of London report/Version 4 (January 2024)/Data/Young people and education/Chapter 10 - Children and Young People.xlsx|t19786.5315693331s|6dd7ef3ddbdbcdf6|1374680|file|local|vector|||0.13||
 data_dir|object|76ea8a948a9b0d25|||||||||||||||
-db_fl|stem|676de6b9cb7553ac|7a50244868dd4842|ef46db3751d8e999|-1255456934|data/sol_v4.db|t19690.4316854038s|07507bbcff0f879e|204800|file|local|vector|||0.38||
-dem_fl|stem|c81c6bc61e4f47b7|51b3150d438e579c|4fe35801c1aaed50|-115630510|C:/Users/joheywood/Greater London Authority//IU - State of London report/Version 4 (January 2024)/Data/Demography/demography_chapter_nov23.xlsx|t19684.4343518519s|3e42eeb4dc4bf7dd|53309|file|local|vector|||0||
-dt_fl|object|431840952103cf0f|||||||||||||||
-env_fl|stem|95b4f53ab94188fd|d047d28278924248|4fe35801c1aaed50|814821019|C:/Users/joheywood/Greater London Authority//IU - State of London report/Version 4 (January 2024)/Data/Environment/Environment data v4.xlsx|t19669.4088888889s|5cd6891b9dc83f3c|342999|file|local|vector|||0.39||
+db_fl|stem|e5302690941bfda7|7a50244868dd4842|ef46db3751d8e999|-1255456934|data/sol_v4.db|t19782.6104878715s|4576fa199e8269e6|1130496|file|local|vector|||0||
+dem_fl|stem|59d4b804239a87f2|59fe8629827d5c3f|4fe35801c1aaed50|-115630510|C:/Users/joheywood/Greater London Authority//IU - State of London report/Version 4 (January 2024)/Data/Demography/demography_chapter_Dec23.xlsx|t19692.3599074074s|300d4a467ad41855|55702|file|local|vector|||0||
+dep_fl|stem|5a6399f4a9e32308|95694e1a863085cc|4fe35801c1aaed50|688614166|C:/Users/joheywood/Greater London Authority//IU - State of London report/Version 4 (January 2024)/Data/Income, poverty and destitution/Data for IPD charts.xlsx|t19706.493587963s|10043eaf95394283|870779|file|local|vector|||0||
+dt_dr|object|bc6829891218365e|||||||||||||||
+dt_dr_prev|object|ed45ad6de7c293fe|||||||||||||||
+dt_fl|object|1ce7bd1162a9fdc6|||||||||||||||
+dt_pth|object|dbbecedb985f4aec|||||||||||||||
+ec_bus_fl|stem|d265f711e01793f3|f33c2159e107887b|4fe35801c1aaed50|1583764595|C:/Users/joheywood/Greater London Authority//IU - State of London report/Version 4 (January 2024)/Data/The Economy and Labour Market/Econ_business_charts.xlsx|t19713.5818402778s|26d408ee031463d8|281025|file|local|vector|||0||
+ec_jobs_fl|stem|23a0e82e6bc3ef56|dd183724d636e23c|4fe35801c1aaed50|1755481176|C:/Users/joheywood/Greater London Authority//IU - State of London report/Version 4 (January 2024)/Data/The Economy and Labour Market/2023-12-01_jobs.xlsx|t19692.6521527778s|695195611e2a9721|54430|file|local|vector|||0||
+ec_skills_fl|stem|ec525f2dc7b0b2b5|8fc803c0274636b9|4fe35801c1aaed50|1165093062|C:/Users/joheywood/Greater London Authority//IU - State of London report/Version 4 (January 2024)/Data/The Economy and Labour Market/Skills_data.xlsx|t19710.7054282407s|141dcc0ac4e81b56|41306|file|local|vector|||0||
+econ_fl|object|31d759c55a3844e9|||||||||||||||
+env_fl|stem|b5636455dc651231|d047d28278924248|4fe35801c1aaed50|814821019|C:/Users/joheywood/Greater London Authority//IU - State of London report/Version 4 (January 2024)/Data/Environment/Environment data v4.xlsx|t19705.6075694444s|0f8dc72c542f8538|353064|file|local|vector|||0.1||
 error_log|function|ed50f9343fcc75ba|||||||||||||||
-get_data_from_sqlite|function|d8063e6930c90ad8|||||||||||||||
-get_obs_chart|function|7b3af0ef6b062b35|||||||||||||||
+error_log2|function|ed50f9343fcc75ba|||||||||||||||
+get_buttons_list|function|19ecf44d795da57e|||||||||||||||
+get_data_from_sqlite|function|a0a7b97ed5733db4|||||||||||||||
+get_obs_chart|function|6ce7cb2fc633a3ab|||||||||||||||
+hbuc|object|2de06d907f594980|||||||||||||||
+hh_uc|stem|463fb0effcd4013e|3a30b29842c77193|4fe35801c1aaed50|1464493587|C:/Users/joheywood/Greater London Authority//IU - State of London report/Version 4 (January 2024)/Data/Income, poverty and destitution/hh_uc.csv|t19730.3870786743s|6ac2f1a2e3177fc2|13866|file|local|vector|||0.14||
+hs_fl|stem|207878ae1c1c3f4a|8ce0ef7e30337fea|4fe35801c1aaed50|-1844228962|C:/Users/joheywood/Greater London Authority//IU - State of London report/Version 4 (January 2024)/Data/Housing/SOL v4 Housing data workbook.xlsx|t19767.5776041667s|86dab049142fbb34|99562|file|local|vector|||0||
+htcrm_fl|stem|78abb63ca1646fe4|2c1bfa731bf1a680|4fe35801c1aaed50|879457860|C:/Users/joheywood/Greater London Authority//IU - State of London report/Version 4 (January 2024)/Data/Community Participation/hate_crime.csv|t19704.377337963s|8b017ccf9e5bda14|2300|file|local|vector|||0.09||
+infl_vac_fl|object|73ad4ed11de605ba|||||||||||||||
 insert_db|function|1226d29a1402ceb9|||||||||||||||
+insert_db_aq|function|21f3b5777d17f106|||||||||||||||
+insert_db2|function|15b54a92f083b354|||||||||||||||
+jbs_fl|object|e0e84c949e00121f|||||||||||||||
+lbw_fl|stem|b259f87d41298f72|47fec99170a21bdb|4fe35801c1aaed50|770784708|C:/Users/joheywood/Greater London Authority//IU - State of London report/Version 4 (January 2024)/Data/Health and wellbeing/LBW_trends_for_London and England_forV4.csv|t19692.3177777778s|d29632a31b86c2e0|694|file|local|vector|||0||
+log|object|3c1f7635bcb6a903|||||||||||||||
+orderctg|function|b1014950f52ca31e|||||||||||||||
 orderxd|function|c5d3ba6249dea677|||||||||||||||
+pchb|stem|5b5820df68eef3f6|2f9fe2d3bfc26505|4fe35801c1aaed50|-1980384453|C:/Users/joheywood/Greater London Authority//IU - State of London report/Version 4 (January 2024)/Data/Income, poverty and destitution/pchb.csv|t19695.7200694444s|f7258be78ff1fd24|1188|file|local|vector|||0||
+prv_jbs|stem|b4dc8a2388f74711|2f18a2abddba47ae|ef46db3751d8e999|-626754644|C:/Users/joheywood/Greater London Authority/IU - State of London report/Version 3 (June 2023)/Data/The Economy and Labour Market/2023-05-04_jobs_skills.xlsx|t19508.5928240741s|9302db974eed6e9a|60149|file|local|vector|||0.1||
 refresh_meta|function|a4be049a327c1391|||||||||||||||
 remove_div|function|a9073d6645d080b5|||||||||||||||
 res_dash|object|508400e254a941d7|||||||||||||||
-run_charts_db|function|f487835c1ab2fd2d|||||||||||||||
-run_comm|stem|818549bf81b5a73a|4a3ef4152c8c63fb|7d7a115a1f174249|-614008771||t19690.4397966152s|97452b5a3d70b0b8|49|rds|local|vector|||3.89||
-run_communities_updates|function|249169d0ccb6360a|||||||||||||||
-run_dem|stem|818549bf81b5a73a|74380d59215e49dc|413c892b63468478|-1003074870||t19690.4397511293s|97452b5a3d70b0b8|49|rds|local|vector|||1.14||
-run_env|stem|818549bf81b5a73a|90d2bcd44dcf502f|4debf3e4c0be15dd|973455256||t19690.4397375298s|97452b5a3d70b0b8|49|rds|local|vector|||2.81||
-run_environment_updates|function|ad5f8fc747b9592e|||||||||||||||
-run_population_updates|function|a16b5330ef2b653a|||||||||||||||
-run_trans_inf|stem|818549bf81b5a73a|55f4d36c58985e57|ce2a7f4a7d2c9cac|-2032176680||t19690.4398392038s|97452b5a3d70b0b8|49|rds|local|vector|||3.66||
-run_transport_infrastructure_updates|function|c4e4ed565b002dab|||||||||||||||
-save_chart|function|831cd8cbee2b3351|||||||||||||||
-setup_db|function|9fa0492f290088fc|||||||||||||||
+run_charts_db|function|d2fc6b9110cc86b1|||||||||||||||
+run_comm|stem|818549bf81b5a73a|98f1d16d33329a63|f31509654aa499fb|-614008771||t19786.5324324771s|97452b5a3d70b0b8|49|rds|local|vector|||5.17||
+run_communities_updates|function|f74ad444acf9ee5e|||||||||||||||
+run_crime_updates|function|b687d39b0c4d04fe|||||||||||||||
+run_crm|stem|818549bf81b5a73a|58ac2173f8acec62|88c46cffd3032a1e|-1839687596||t19786.5323092513s|97452b5a3d70b0b8|49|rds|local|vector|||6.02||
+run_cyp|stem|818549bf81b5a73a|f3c7b2e5346a7a79|b1a34586dd53d1e9|596469658||t19786.5321934758s|97452b5a3d70b0b8|49|rds|local|vector|||9.28||
+run_dem|stem|818549bf81b5a73a|74380d59215e49dc|dda759dd91c675a0|-1003074870||t19786.5320853124s|97452b5a3d70b0b8|49|rds|local|vector|||1.47||
+run_econ|stem|818549bf81b5a73a|481ec8aea2f99f7e|cb954e339e9eecf6|-1210988585||t19786.5324940554s|97452b5a3d70b0b8|49|rds|local|vector|||5.24||
+run_economy_updates|function|eb1745abfa37322b|||||||||||||||
+run_env|stem|818549bf81b5a73a|191b02c5560c1507|4a92163350fafafb|973455256||t19786.5323472342s|97452b5a3d70b0b8|49|rds|local|vector|||3.2|Closing open result set, pending rows. Closing open result set, pending rows. Closing open result set, pending rows|
+run_environment_updates|function|a523c75c629b8e49|||||||||||||||
+run_health_wellbeing_updates|function|a055e6447c60d505|||||||||||||||
+run_housing|stem|818549bf81b5a73a|b2bc66342b660937|da972530b3922ec2|1365385904||t19786.5323719235s|97452b5a3d70b0b8|49|rds|local|vector|||2.06||
+run_housing_updates|function|ebbd9ad125aeae82|||||||||||||||
+run_hw|stem|818549bf81b5a73a|1bb0b5480a5c2201|0be583f152e67477|-656778831||t19786.5320670338s|97452b5a3d70b0b8|49|rds|local|vector|||4.27||
+run_inc_dep|stem|818549bf81b5a73a|f170f504041f7751|03568c37f02259b1|1576918223||t19786.5322388243s|97452b5a3d70b0b8|49|rds|local|vector|||3.84||
+run_income_dep_updates|function|3b7a8d1564094433|||||||||||||||
+run_jobs_skills_updates|function|24693fd763ba5fd9|||||||||||||||
+run_narrow|function|7f751aef04cd03cd|||||||||||||||
+run_nested|function|7f751aef04cd03cd|||||||||||||||
+run_population_updates|function|b3ec0906bec4b105|||||||||||||||
+run_trans_inf|stem|818549bf81b5a73a|55f4d36c58985e57|2a906cb9fa723c8e|-2032176680||t19786.5320166955s|97452b5a3d70b0b8|49|rds|local|vector|||3.75||
+run_transport_infrastructure_updates|function|00f6de2c7194d516|||||||||||||||
+run_wide|function|6709fb1dc442bbc6|||||||||||||||
+run_yp_education_updates|function|c1fdb90539f92814|||||||||||||||
+save_chart|function|db64a0d95ee8b3b1|||||||||||||||
+sen_eth_fl|object|92bd64731dff100c|||||||||||||||
+seneth_fl|stem|0221890a90628ece|677fe96b9792f45b|4fe35801c1aaed50|-639341567|C:/Users/joheywood/Greater London Authority//IU - State of London report/Version 4 (January 2024)/Data/Health and wellbeing/SEN_ethnicity_London_England_forV4.csv|t19692.3180208333s|9791ccc64d484b0d|428|file|local|vector|||0||
+setup_db|function|52ba98bbe63d5ca4|||||||||||||||
 shrpnt_root|object|76ea8a948a9b0d25|||||||||||||||
-trans_inf_fl|stem|f22bca2684874b5e|6c15d3702e2be67a|4fe35801c1aaed50|790357002|C:/Users/joheywood/Greater London Authority//IU - State of London report/Version 4 (January 2024)/Data/Transport and Infrastructure/Transport & Infrastructure.xlsx|t19689.714849537s|27b1717f3677e517|879824|file|local|vector|||0||
-upload_charts_db_to_git|function|cf0992f3479eb583|||||||||||||||
+smoke_fl|stem|f8c706e0e93a1ef6|bfe0a26f4b8bdf1e|4fe35801c1aaed50|-437821258|C:/Users/joheywood/Greater London Authority//IU - State of London report/Version 4 (January 2024)/Data/Health and wellbeing/Smoking_Housing_forV4.csv|t19692.3184375s|8b1a598f9373a011|388|file|local|vector|||0||
+smoking_fl|object|8648438bb1e15a39|||||||||||||||
+sol_aq|function|b3e050be0ca84208|||||||||||||||
+sol_buttons|function|56f8965cf496d5e1|||||||||||||||
+sol_dashboard|function|0431eb9687057958|||||||||||||||
+trans_inf_fl|stem|9185fb30735c0923|6c15d3702e2be67a|4fe35801c1aaed50|790357002|C:/Users/joheywood/Greater London Authority//IU - State of London report/Version 4 (January 2024)/Data/Transport and Infrastructure/Transport & Infrastructure.xlsx|t19725.4456481481s|27204fb1e7d91376|847289|file|local|vector|||0||
+ucws|stem|7fd880b2b0616369|22da903cc3294167|4fe35801c1aaed50|1498248139|C:/Users/joheywood/Greater London Authority//IU - State of London report/Version 4 (January 2024)/Data/Income, poverty and destitution/pucws.csv|t19730.3870964986s|db1e02a8123818ae|11779|file|local|vector|||0.1||
+update_meta_page|function|8984d2e55dbfdc9c|||||||||||||||
+upload_charts_db_to_git|function|6d3d0664d189f3eb|||||||||||||||

@@ -14,7 +14,7 @@ library(readxl)
 
 dt_fl <- file.path("C:/Users/joheywood/Greater London Authority/",
                    "IU - State of London report/Version 4 (January 2024)/Data/",
-                   "Demography/demography_chapter_nov23.xlsx")
+                   "Demography/demography_chapter_Dec23.xlsx")
 
 # Function: Inserts data for Demography chapter
 # Arguments:
@@ -30,7 +30,7 @@ run_population_updates <- function(dt_fl, dbfl = "") {
     
     #### Fig 1. London Population #### 
     tryCatch({
-        read_excel(dt_fl, "fig1 london population") %>%
+        read_excel(dt_fl, "Fig1_populationChange_ed") %>%
             mutate(dataset = "sol_lpop", xwhich = 2, xvardt = date, xvarchar = "",
                    yvllb = source, yval = value,
                    text = ifelse(yvllb == "Census estimates", "dotted", "solid")) %>%

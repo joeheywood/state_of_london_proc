@@ -1,0 +1,895 @@
+---
+title: "State of London Dashboard"
+output: 
+  flexdashboard::flex_dashboard:
+    self_contained: false
+    css: sol.css
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(ggplot2)
+library(dplyr)
+library(glue)
+library(here)
+library(gglaplot)
+library(autodash)
+library(robservable)
+# source("d3_v2.R")
+# source("sol_png.R")
+source("R/sqlite_charts_db.R")
+
+
+pl <- gla_pal(n = 6)
+
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, error = FALSE, dev='jpeg' )
+```
+
+<script>
+   document.querySelector(".navbar-header").innerHTML =
+            "<a href=\"#intro\" class=\"navbar-brand navbar-inverse\">State of London (Beta)</a>";
+</script> 
+
+# Introduction {#intro}
+
+## About this site {data-width="800"}
+
+### State of London Dashboard
+
+Welcome to State of London Dashboard (BETA version). 
+
+This Dashboard provides a selection of key datasets informing the work of the Mayor, the London Assembly, and stakeholders in London. The charts here mirror those included in the [State of London report](https://data.london.gov.uk/dataset/state-of-london), providing the latest available data.   
+
+Topics covered in both the report and the Dashboard are: 
+
+* [Demography](#demography)  
+* [The Economy and Labour Market](#economy) 
+* [Communities](#communities) 
+* [Crime and Safety](#crime) 
+* [The Environment](#environment)
+* [Housing](#housing) 
+* [Income, Poverty and Destitution](#poverty) 
+* [Transport and Digital Infrastructure](#infrastructure) 
+* [Young people and Education](#young-people) 
+* [Health and Wellbeing](#health-wellbeing) 
+
+
+The Dashboard is in development and we welcome feedback to: intelligence@london.gov.uk  
+
+
+
+
+## Photo
+
+### 
+
+<img src="images/anna-dziubinska-unsplash.jpg" title="Busy Train station" alt="" />
+<p class="caption">Photo by Anna dziubinska</p>
+
+
+
+# Demography {#demography data-navmenu="Sections"}
+
+## Sidebar {data-width="200"}
+
+### Demography
+
+This section presents data on London’s demographics including indicators on total population change, international migration and the birth rate. 
+
+Official population estimates are published annually but with a significant lag. Alternative sources and indicators are presented here to provide more timely insights into recent trends. 
+
+Detailed analysis of how London’s population changed during the pandemic can be found in a two-part report linked below. 
+
+#### Further analysis
+
+[Demography pages on the Datastore](https://data.london.gov.uk/demography/)
+
+[Population change in London during the pandemic](https://data.london.gov.uk/demography/demographic-impact-of-covid-19/)
+
+[Population and household projections](https://data.london.gov.uk/demography/population-and-household-projections/)
+
+## All tabs {.tabset}
+
+### Population Change
+
+```{r pop_chng}
+sol_buttons(
+    c(
+        sol_lpop = "London Population",
+        sol_cob_uk = "Whether born in UK",
+        sol_cob = "Country of Birth"
+    )
+)
+```
+
+### Annual Births
+
+```{r cob}
+sol_buttons(
+    c(
+        sol_ann_births = "Annual births",
+        sol_mcob_uk = "Whether mother born in UK",
+        sol_mcob = "Mother's country of Birth"
+    )
+)
+
+```
+
+
+# The Economy and Labour Market {#economy data-navmenu="Sections"}
+
+## Sidebar {data-width="200"}
+
+### The Economy and Labour Market 
+
+This section presents a summary of the latest indicators related to London’s economy, including metrics on: 
+
+* London’s economic output 
+* Consumer expenditure and confidence 
+* Foreign direct investment 
+* Business births and closures 
+
+It also provides a selection of indicators related to London’s labour market including: 
+
+* The number of jobs in London and a breakdown by sector 
+* Employment, unemployment and inactivity rates  
+* Job quality and low pay  
+* Skills attainment 
+
+#### Further data and analysis 
+
+[London’s Economy Today](https://www.london.gov.uk/what-we-do/research-and-analysis/economic-analysis/monitoring-londons-economy)
+
+[London’s Economic Outlook](https://www.london.gov.uk/what-we-do/research-and-analysis/economic-analysis/monitoring-londons-economy#Stub-412102)  
+
+[Economic Fairness section of the London Datastore](https://data.london.gov.uk/economic-fairness/)
+
+## All tabs {.tabset}
+
+### Economy and Business
+
+```{r econ}
+sol_buttons(
+    c(
+        sol_gva = "GVA",
+        sol_spending = "Spending",
+        #sol_conf = "Consumer Confidence",
+        sol_fdi = "Foreign Investment",
+        sol_busbd = "Business Births/Closures"
+    )
+)
+
+
+```
+
+
+### Jobs
+
+```{r jobs}
+sol_buttons(
+    c(
+        sol_workforce = "Workforce", 
+        sol_wfprof = "Sector",
+        sol_empl = "Empl.", 
+        sol_unempl = "Unempl.",
+        sol_inact = "Inactivity",
+        sol_insemp = "Ins Empl.", 
+        sol_llw = "Living wage", 
+        sol_empgap = "Empl. Gaps"
+    )
+)
+# sol_dash_lite("sol_empl")
+```
+
+
+### Skills
+
+
+
+```{r skills}
+sol_buttons(
+    c(
+        sol_highqual = "Level 4/No Qualifications",
+        sol_fe_skills = "FE Skills",
+        sol_ssv = "Skills Shortage Vacancies"
+    )
+)
+
+        
+```
+
+# Income, Poverty and Destitution {#poverty data-navmenu="Sections"}
+
+## Sidebar {data-width="200"}
+
+### Income, Poverty and Destitution
+
+This section covers data about the related concepts of income, poverty and its most extreme form – destitution. Metrics are included on: 
+
+* Income inequality 
+* Means-tested benefits 
+* Relative poverty and persistent poverty 
+* Material deprivation 
+* Fuel poverty 
+* Food insecurity 
+* Personal insolvencies 
+
+ 
+
+#### Further data and analysis 
+
+[Economic Fairness – London Datastore](https://data.london.gov.uk/economic-fairness/)
+
+## All tabs {.tabset}
+
+### Income inequality
+
+```{r inc_inc}
+ons_order <- c("North East", "North West", "Yorkshire and the Humber",
+               "East Midlands", "West Midlands", "East", "East of England", "London", 
+               "Inner London", "Outer London", "South East", "South West",
+               "Wales", "Scotland", "Northern Ireland")
+llg <- list(o = "top", 
+            `0.1` = "10th percentile",
+            `median` = "Median",
+            `0.9` = "90th percentile")
+
+#sol_dashboard("sol_dhhinc", 
+#              leg = llg, fsz = 20) ## 
+
+sol_dashboard("sol_dhhinc") 
+```
+
+### Poverty
+
+```{r poverty}
+# sol_dashboard("sol_relpov", 
+#               leg = list(o = "top"), 
+#               ordr = c("All people", 
+#                        "Children", 
+#                        "Working Age", 
+#                        "Pensioners") )
+#### SOME OF THESE NEED UPDATING FROM PREVIOUS inc dep ####
+sol_buttons(
+    c(
+        sol_uchh = "UC (household)",
+        sol_ucws = "UC (work status)",
+        sol_pensmeans = "Pensioners",
+        sol_relpov = "Relative poverty",
+        sol_prspov = "Persistent poverty",
+        sol_struggfin = "Struggling",
+        sol_matdep_o = "Material dep (old)",
+        sol_matdep_c = "Material dep (child)"
+        
+
+    )
+)
+```
+
+### Destitution
+
+```{r destitution}
+
+#### ALL OF THESE NEED UPDATING FROM PREVIOUS inc dep ####
+sol_buttons(
+    c(
+        sol_fuelpov = "Fuel poverty",
+        sol_foodsec = "Food security",
+        sol_persins = "Personal insolvencies"
+
+    )
+)
+```
+
+# Housing {#housing data-navmenu="Sections"}
+
+## Sidebar {data-width="200"}
+
+
+### Housing
+
+This section provides a range of indicators relevant to the Mayor’s housing policy and strategy, including metrics related to:
+
+*	Housing supply
+*	Energy efficiency
+*	Housing affordability
+*	Housing need
+*	Homelessness and rough sleeping
+
+The indicators covered here are all quarterly and recently updated, while the GLA’s annual [Housing in London report](https://data.london.gov.uk/housing/housing-in-london/) provides a much larger set of indicators, including those reported annually and with a longer lag. 
+  
+#### Further data and analysis
+
+[Housing in London](https://data.london.gov.uk/housing/housing-in-london/)
+
+
+## All tabs {.tabset}
+
+### Housing supply
+
+```{r nh_epc}
+# sol_dashboard("sol_nh_epc")
+
+sol_buttons(
+    c(
+        sol_nh_epc = "New homes (EPC registered)",
+        sol_nh_pln = " planning permissions for new homes"
+    )
+)
+```
+
+
+### Energy efficiency and affordability
+
+```{r hs_eneff}
+sol_buttons(
+    c(
+        sol_epc = "Energy efficiency",
+        sol_rnt_aff = "Private rent affordability"
+    )
+)
+
+
+```
+
+
+
+### Housing need
+
+```{r tempacc}
+sol_buttons(
+    c(
+        sol_tempacc = "Possession claims",
+        sol_hmlsdec = "Homeless households",
+        sol_rghslp = "Rough sleeping"
+    )
+)
+```
+
+
+# The Environment {#environment data-navmenu="Sections"}
+
+## Sidebar {data-width="200"}
+
+### The Environment
+
+This section provides information on the state of London’s environment with the latest available data on: 
+
+* Greenhouse gas emissions  
+* Nitrogen dioxide concentrations 
+* Particulate matter concentrations 
+* Household waste collected and recycling rates 
+* Energy efficiency of buildings 
+* Renewable energy generation in London 
+
+#### Further data and analysis 
+
+[Local Authority CO2 interactive map ](https://naei.beis.gov.uk/laco2app/) 
+
+[The London Air Quality Network provides a London-wide map](https://www.londonair.org.uk/LondonAir/nowcast.aspx)
+
+[Breathe London](https://www.breathelondon.org/)
+
+[Interactive EPC Tool](https://app.powerbi.com/view?r=eyJrIjoiNTI3ODI0ODktMDAxMS00NGQ2LWJmYTItMTA2MzA4YjkzMjBjIiwidCI6ImJmMzQ2ODEwLTljN2QtNDNkZS1hODcyLTI0YTJlZjM5OTVhOCJ9&pageName=ReportSectionabd88355d2a923eaeb50) 
+
+[Green infrastructure maps and tools.](https://www.london.gov.uk/what-we-do/environment/parks-green-spaces-and-biodiversity/green-infrastructure-maps-and-tools#acc-i-54374)
+
+## All tabs {.tabset}
+
+### Greenhouse
+
+```{r greenhouse}
+sol_dashboard("sol_greenhouse")
+```
+
+
+### Air Quality
+
+```{r aq_all, echo=FALSE, message=FALSE, }
+sol_aq()
+```
+
+
+### Waste and circular economy
+
+```{r wst_circ}
+
+sol_buttons(
+    c(
+        wst = "Waste",
+        rcyc = "Recycling"
+    )
+)
+```
+
+
+### Energy generation and efficiency
+
+
+
+```{r energy}
+sol_buttons(
+    c(
+        epc = "Energy efficiency",
+        bio = "Renewable electricity generation"
+    )
+)
+```
+
+
+# Communities {#communities data-navmenu="Sections"}
+
+## Sidebar {data-width="200"}
+
+### Communities
+
+This section sets out trends in a range of measures related to communities in London including community participation and inclusion. Metrics are provided on: 
+
+
+* Civic participation 
+* Democratic participation  
+* Neighbourhood belonging and trust 
+* Social cohesion 
+* Relationships  
+* Social participation 
+* Local institutions and amenities 
+ 
+Much of the data is drawn from the Department for Digital, Culture, Media & Sport’s (DCMS) Community Life Survey 
+
+#### Further data and analysis 
+
+[High Streets for All | London City Hall](https://www.london.gov.uk/coronavirus/londons-recovery-coronavirus-crisis/recovery-context/high-streets-all)
+
+[London Summary: Community Life Survey](https://data.london.gov.uk/dataset/community-life-survey-london) 
+
+
+## All tabs {.tabset}
+
+### Civic Participation
+
+```{r civic_part}
+sol_buttons(
+    c(
+        fmlvol = "Formal volunteering",
+        infvol = "Informal volunteering",
+        socact = "Social Action"
+    )
+)
+```
+
+
+### Democratic participation
+
+```{r dempart}
+sol_buttons(
+    c(
+        votereg = "Voter registration",
+        infloc = "Influencing decisions"
+    )
+)
+
+```
+
+
+### The neighbourhood
+
+```{r nghbel}
+sol_buttons(
+    c(
+        nghbel = "Neighbourhood belonging",
+        nghbtrst = "Neighbourhood trust"
+    )
+)
+```
+
+
+### Cohesion
+
+```{r coh}
+sol_buttons(
+    c(
+        coh = "Neighbourhood cohesion",
+        htcrm = "Hate crime",
+        sol_phtcrm = "Preception of hate crime"
+    )
+)
+```
+
+
+
+### Relationships
+
+```{r nghb}
+sol_buttons(
+    c(
+        sol_nghb = "Talking to neighbours",
+        sol_hlp = "Social isolation"
+    )
+)
+```
+
+
+### Social participation
+
+```{r soc_part}
+sol_buttons(
+    c(
+        sol_culture = "Participation in cultural events",
+        sol_sport = "Participation in sport"
+    )
+)
+```
+
+
+### Local Institutions
+
+```{r loc_inst}
+sol_buttons(
+    c(
+        sol_insttrst = "Trust in local institutions",
+        sol_footfall = "Local high streets" # NOT WORKING
+    )
+)
+# sol_dashboard("sol_insttrst", ordr = od)
+```
+
+# Crime and Safety {#crime data-navmenu="Sections"}
+
+## Sidebar {data-width="200"}
+
+### Crime and Safety
+
+This section provides a range of indicators related to crime and safety in London. It includes metrics on: 
+
+* Total notifiable offences 
+* Violence – both domestic and non-domestic 
+* Sexual offences 
+* Knife crime 
+* Homicide 
+* Acquisitive crime including theft, burglary and fraud 
+* Anti-social behaviour, harassment and safety after dark 
+* Satisfaction levels of reporting victims and public perception of the Metropolitan Police * Service 
+
+#### Further data and analysis 
+
+[Public Voice MOPAC Dashboard](https://www.london.gov.uk/what-we-do/mayors-office-policing-and-crime-mopac/data-and-statistics/public-voice-dashboard) 
+
+[NFIB Fraud and Cyber Crime Dashboard](https://colp.maps.arcgis.com/apps/dashboards/0334150e430449cf8ac917e347897d46) 
+
+[MPS Crime Data Dashboard  ](https://www.met.police.uk/sd/stats-and-data/met/crime-data-dashboard/) 
+
+## All tabs {.tabset}
+
+### Total Crime
+
+```{r tno}
+sol_dashboard("sol_tno")
+```
+
+### Violence
+
+```{r violence}
+sol_buttons(
+    c(
+        sol_vwi = "Non-DA Violence with injury",
+        sol_da = "Domestic abuse",
+        sol_sxoff = "Sexual offences",
+        sol_knife = "Knife crime",
+        sol_hmcd = "Homicide"
+    )
+)
+# sol_dashboard("sol_vwi")
+```
+
+
+
+
+
+### Acquisitive Crime
+
+```{r acquis}
+sol_buttons(
+    c(
+        sol_rob = "Robbery",
+        sol_brglry = "Burglary",
+        sol_tfmv = "Vehicle theft",
+        sol_tpo = "Theft from person",
+        sol_fraud = "Fraud/Cyber"
+    )
+)
+# sol_dashboard("sol_rob")
+```
+
+
+
+### Safety
+
+```{r safety}
+sol_buttons(
+    c(
+        sol_asb = "Anti-social behaviour",
+        sol_hrsm = "Harassment",
+        sol_dark = "Safety after dark",
+        sol_vctsat = "Victim satisfaction",
+        sol_fair = "MPS fair"
+    )
+)
+```
+
+
+#  Transport and Digital Infrastructure{#infrastructure data-navmenu="Sections"}
+
+## Sidebar {data-width="200"}
+
+### Transport and Digital Infrastructure 
+
+This section covers the state of London’s transport and digital infrastructure and changes in travel patterns since the pandemic. Metrics are included for:: 
+
+* Public transport demand and mode share 
+* Active travel 
+* Safety on transport  
+* Transport accessibility  
+* Transport quality 
+* Transport efficiency 
+* Digital Infrastructure  
+
+The transport section draws mainly on summary indicators from the ‘Travel in London’ (TiL) report, an annual publication by TfL. 
+
+#### Further data and analysis 
+
+[Travel in London](https://content.tfl.gov.uk/travel-in-london-report-14.pdf)
+
+[London Connectivity map](https://apps.london.gov.uk/connectivity/#/51.5005021528,-0.109319755005,14/data/17,16,15,12,11,10,9,8,7,120,0/17,16,15,12,9,8,1/none/none/)
+
+## All tabs {.tabset}
+
+### Demand/mode share
+
+```{r demand}
+sol_buttons(
+    c(
+        # tfl = "Demand for public transport",
+        sol_modesplit = "Mode share"
+
+    )
+)
+
+```
+
+
+### Active travel
+
+```{r actvtrav}
+sol_dashboard("sol_actvtrav")
+```
+
+### Safety
+
+```{r rd_safety}
+
+sol_buttons(
+    c(
+        sol_rd_safety = "Road safety",
+        sol_bus_safety = "Bus safety"
+
+    )
+)
+
+
+```
+
+
+### Accessiblity/Affordability
+
+```{r accessibility}
+sol_buttons(
+    c(
+        sol_accessibility = "Accessibility",
+        sol_transp_aff = "Transport affordability"
+
+    )
+)
+
+```
+
+### Quality
+
+```{r bus}
+# ordr <- c("Scheduled kilometres (millions) operated",
+#           "Scheduled kilometres lost due to congestion and other causes")
+# 
+# sol_dashboard("sol_bus", ordr = ordr)
+sol_buttons(
+    c(
+        sol_bus = "Bus Service",
+        sol_tube = "London Underground Service"
+    )
+)
+```
+
+### Efficiency
+
+```{r traffic}
+sol_dashboard("sol_traffic") # cutting off labels ?
+
+```
+
+### Digital
+
+```{r flfb}
+sol_buttons(
+    c(
+        sol_flfb = "Full fibre availability",
+        sol_notspot = "Broadband unavailability"
+    )
+)
+```
+
+
+
+#  Young People and Education {#young-people data-navmenu="Sections"}
+
+## Sidebar {data-width="200"}
+
+### Young People and Education
+
+This section reports on children and young people (aged 0-25 years). It sets out trends across a range of indicators, covering:  
+
+* Health and happiness  
+* Early years  
+* Key Stage 4 education 
+* Special Educational Needs and Disabilities  
+* Post Key Stage 4 education  
+* Safety  
+ 
+#### Further data and analysis 
+ 
+[London Education Report | London City Hall](https://www.london.gov.uk/what-we-do/education-and-youth/london-education-report) 
+
+## All tabs {.tabset}
+
+### Health and Happiness
+
+```{r hlth_hppy}
+sol_buttons(
+    c(
+        sol_chmort = "Child mortality",
+        sol_obs = "Obesity",
+        sol_ylstsf = "Life satisfaction"
+    )
+)
+```
+
+### Early years
+
+```{r eyp}
+sol_buttons(
+    c(
+        sol_eyp = "Early years providers",
+        sol_ofsted = "Good/outstanding settings",
+        sol_eydev = "Early years development",
+        sol_feee = "Free early education entitlement",
+        sol_mthr = "Mothers in work"
+    )
+)
+
+```
+
+
+### Key stage 4
+
+```{r ks4}
+sol_buttons(
+    c(
+        sol_engmat = "English/maths",
+        sol_att8 = "Attainment 8 score",
+        sol_ftexcl = "Fixed term exclusions",
+        sol_prmexcl = "Permanent exclusions"
+    )
+)
+
+```
+
+
+
+### Special Needs/disabilities
+
+```{r ehcp}
+# sol_dashboard("sol_ehcp", hh = 600)
+sol_dashboard("sol_ehcp")
+```
+
+
+### Post Key Stage 4
+
+```{r postks4}
+sol_buttons(
+    c(
+        sol_lvl3 = "Level 3 Qualification",
+        sol_app = "Apprenticeship"
+    )
+)
+```
+
+
+### Safety
+
+```{r ypsfty}
+# sol_dashboard("sol_sfty", ww = 900, hh = 600)
+sol_dashboard("sol_sfty")
+```
+
+#  Health and Wellbeing {#health-wellbeing data-navmenu="Sections"}
+
+## Sidebar {data-width="200"}
+
+### Health and Wellbeing
+
+This section reports on children and young people (aged 0-25 years). It sets out trends across a range of indicators, covering:  
+
+* Life expectancy, mortality and inequalities
+* Inequalities in morbidity
+* Behavioural risk factors
+* Healthcare inequalities
+
+## All tabs {.tabset}
+
+
+### Life expectancy, mortality and inequalities
+
+```{r lifeexp_02}
+
+sol_buttons(
+    c(
+        sol_life_exp64 = "Life expectancy at age 64",
+        sol_life_exp02 = "Life expectancy at birth",
+        sol_75_mort = "U75 mortality",
+         sol_adult_mort = "Causes of adult mortality" #,
+        # sol_infmor = "Infant mortality"
+
+    )
+)
+```
+
+
+### Inequalities in morbidity
+
+```{r ineq_morb}
+sol_buttons(
+    c(
+        sol_lbw = "Low birth weight", 
+        sol_prev_disease = "Prevalence of disease",
+        sol_adult_anx = "Adult anxiety/Life satis",
+        sol_semh = "SEMH"
+    )
+)
+```
+
+
+
+### Behavioural risk factors 
+
+```{r brisks}
+# sol_dashboard("sol_smoke") ## 
+sol_buttons(
+    c(
+        # sol_obesity = "Obesity",
+        # sol_physact = "Physical activity",
+        sol_smoke = "Smoking prevalance"
+    )
+)
+```
+
+
+### Healthcare inequalities
+
+```{r cancdep}
+sol_buttons(
+    c(
+        sol_cancdep = "Cancer referral rate"
+        # sol_covjabs = "COVID jabs",
+        # sol_asthma = "Asthma"
+    )
+)
+```
+

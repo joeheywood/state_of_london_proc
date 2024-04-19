@@ -26,10 +26,20 @@ setup_db <- function(fl, clear = TRUE, mtd = meta_file) {
         xvardt TEXT,
         yval NUMERIC,
         yvllb TEXT,
-        text TEXT
+        text TEXT,
+        chart TEXT
     )
     "
     dbSendQuery(dbcon, ind_sql)
+    upd_sql <- "
+    CREATE TABLE updates(
+        dataset TEXT,
+        lastmax NUMERIC,
+        newvals INT,
+        timestamp TEXT,
+        execfile TEXT,
+        tab TEXT)"
+    dbSendQuery(dbcon, upd_sql)
     dbDisconnect(dbcon)
     Sys.setenv(SOL_DB_PATH=fl)
     fl

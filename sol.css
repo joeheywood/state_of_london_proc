@@ -1,0 +1,74 @@
+.section.sidebar {   
+	top: 61px;   
+	border-bottom: 10px solid #ececec;
+	border-left: 10px solid #ececec;
+	background-color: #ffffff 
+}
+
+.chart-title {
+    font-size: 24px;
+}
+
+label {
+	font-family: Arial, "Source Sans Pro",Calibri,Candara,Arial,sans-serif;
+}
+
+.sidebar {
+	overflow: auto;
+}
+
+.navbar-inverse {
+	background: #121516;
+    	color: #fff;
+}
+
+.body {
+	font-family: Arial, "Source Sans Pro",Calibri,Candara,Arial,sans-serif;
+}
+
+.navbar-inverse .navbar-nav > .active > a{
+ 	background-color: #367fa9;
+    	color: #fff;
+}
+
+.storyboard-nav .sbframelist ul li.active {
+	background-color: #367fa9;
+    	color: #fff;
+}
+
+
+
+
+
+
+.bar_purple {
+    fill: #9e0059
+}
+
+
+.btns {
+	background: #2a3135;
+	display: inline-block;
+	text-align: center;
+	border: none;
+	padding: 2px 5px;
+	margin: 4px;
+	color: #ffffff;
+	text-decoration: none;
+	transition-duration: 0.4s;
+    border-top: solid 4px  #2a3135;
+}
+
+
+.btns:hover {
+  background-color: #3b4246; 
+  color: white;
+  border-top: solid 4px #6da7de;
+}
+
+
+.act_btn {
+  border-top: solid 4px #6da7de;
+  font-weight: bold;
+}
+
