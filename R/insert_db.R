@@ -33,11 +33,14 @@ insert_db <- function(dat, log = "", excfl = "") {
         expnms <- paste(clmns, collapse = "|") 
         mss <- clmns[which(!clmns %in% names(dat))] #names(dat)[which(!names(dat) %in% clmns)]
         message(glue("In data: {dtnms}"))
-        message(glue("Expecting: {clmns}"))
+        message(glue("Expecting: {expnms}"))
         message(glue("Missing: {paste(mss, collapse = '|')}"))
         stop("ERROR. You need all the columns")
     } else {
-        dat <- dat[, clmns]
+        if(!"chart" %in% names(dat)) {
+            dat$chart <- ""
+        }
+        dat <- dat[, c(clmns, "chart")]
         dtst <- unique(dat$dataset)
         
         #### Give some info to user about y/x ranges ####

@@ -7,8 +7,9 @@ library(rsvg)
 library(r2d3svg)
 source("R/get_chart_data.R")
 
-shrpnt_root <- file.path("C:/Users/joheywood/Greater London Authority/",
-                    "IU - State of London report/Version 4 (January 2024)/Data/")
+shrpnt_root <- file.path("C:/Users/joheywood/Greater London Authority/", 
+                         "IU - Shared Projects/State of London report/", 
+                         "Version 5 (June 2024)/Data/")
 
 get_buttons_list <- function(dd) {
     xn <- names(dd)
@@ -63,8 +64,35 @@ sol_dashboard <- function(dtst) {
     
 }
 
+
+## Function to run a single chart from start to finish
+## Args:
+##   dtst - the dataset code (see data/meta.csv for more info)
+##   opts - chart options see code below for what these should be
+##   mopts - meta options see code below
+##   pp - preproceessing option. eg when the data needs to be ordered in a
+##        particular way before being added.
+run_for_single_chart <- function(dtst, opts, mopts, pp) {
+    ## Sets up a sqlite database that can be hosted on observable
+    fl <- "data/single_chart.db"
+    closeAllConnections()
+    file.remove(fl)
+    cn <- dbConnect(RSQLite::SQLite(), fl)
+    tbls <- dbListTables(cn)
+    if(!"chartdat" %in% tbls) {
+        dbSendQuery(cn, "create table chartdat(dtst text, xd text, b text, y real, text text, chart text);")
+        dbSendQuery(cn, "create table chartmeta(dtst text primary key, chartmeta json);")
+        dbSendQuery(cn, "create table meta(dtst text primary key, chapter text, title text, sub text, last_update text, last_check text, max_xval text, meta json);")
+        dbSendQuery(cn, "create table updates(dtst text primary key, lastmax text, newvals text, timestamp text, execfile text, latest_newvals text);")
+    } 
+    save_chart(dtst, opts, mopts, pp, cn)
+    dbDisconnect(cn)
+    convert_all_to_svg()
+    TRUE
+}
+
 run_charts_db <- function() {
-    fl <- "data/sol_v4_charts.db"
+    fl <- "data/sol_v5_charts.db"
     closeAllConnections()
     file.remove(fl)
     cn <- dbConnect(RSQLite::SQLite(), fl)
@@ -92,11 +120,10 @@ run_charts_db <- function() {
 
 convert_all_to_svg <- function() {
     fls <- dir("data/RDA", full.names = TRUE)
-    map_lgl(fls, convert_to_svg)
-    
+    map_lgl(fls, convert_to_svg, dly = 5)
 }
 
-convert_to_svg <- function(fl) {
+convert_to_svg <- function(fl, dly = 3) {
     tryCatch({
         load(fl)
         shrpnt <- file.path(shrpnt_root, d$m$sol_chapter, "svg")
@@ -104,11 +131,17 @@ convert_to_svg <- function(fl) {
         ttl <- d$m$ttl |> 
             str_replace_all("[:/]", "") |>
             trimws()
-        
-        save_d3_svg(d$chart, file = glue("{shrpnt}/{ttl}.svg"),  delay = 2 )
+        # save(d, file = glue("debug_{d$d$dataset[1]}.RData"))
+        save_d3_svg(d$chart, file = glue("{shrpnt}/{ttl}.svg"),  delay = dly )
         remove_div(glue("{shrpnt}/{ttl}.svg"))
         print(glue("Chart added: {ttl}"))
-        file.remove(fl)
+        sfl <-glue("{shrpnt}/{ttl}.svg")
+        if(file.info(sfl)$size > 2000) {
+            file.remove(fl)
+            
+        } else {
+            print(glue("SMALL FILE ERROR: {sfl}"))
+        }
         TRUE
         
     }, error = function(e) {
@@ -175,18 +208,22 @@ save_chart <- function(dtst, opts = list(), mopts = list(), preproc = list(), co
 
 
 chart_sqlite_environment <- function(cn) {
-    save_chart("bio", conn = cn)
-    save_chart("sol_greenhouse", conn = cn)
-    save_chart("epc", conn = cn)
-    save_chart("wst", conn = cn)
-    save_chart("rcyc", conn = cn)
-    save_chart("aq_no2", conn = cn, preproc = list(filter_chart = "Roadside"))
-    save_chart("aq_no2", conn = cn, preproc = list(filter_chart = "Urban Background"))
-    save_chart("aq_pm10", conn = cn, preproc = list(filter_chart = "Roadside"))
-    save_chart("aq_pm10", conn = cn, preproc = list(filter_chart = "Urban Background"))
-    save_chart("aq_pm25", conn = cn, preproc = list(filter_chart = "Roadside"))
-    save_chart("aq_pm25", conn = cn, preproc = list(filter_chart = "Urban Background"))
-    save_chart("aq_pm25", conn = cn)
+    # save_chart("bio", conn = cn)
+    save_chart("sol_greenhouse", 
+               opts = list(xFontsize = "10pt", lblFontsize = "10pt", broke_x = 2),
+               mopts = list(cheight = 600), conn = cn)
+    save_chart("sol_pc_greenhouse", opts = list(forceYDomain = c(0, 18)), conn = cn)
+    save_chart("epc", opts = list(forceYDomain = c(0, 1)), conn = cn)
+    save_chart("wst", opts = list(suffix = "%"), conn = cn)
+    save_chart("rcyc", opts = list(forceYDomain = c(0, 1)), conn = cn)
+    save_chart("bio", opts = list(forceYDomain = c(0, 1500)), conn = cn)
+    # save_chart("aq_no2", conn = cn, preproc = list(filter_chart = "Roadside"))
+    # save_chart("aq_no2", conn = cn, preproc = list(filter_chart = "Urban Background"))
+    # save_chart("aq_pm10", conn = cn, preproc = list(filter_chart = "Roadside"))
+    # save_chart("aq_pm10", conn = cn, preproc = list(filter_chart = "Urban Background"))
+    # save_chart("aq_pm25", conn = cn, preproc = list(filter_chart = "Roadside"))
+    # save_chart("aq_pm25", conn = cn, preproc = list(filter_chart = "Urban Background"))
+    # save_chart("aq_pm25", conn = cn)
     
 }
 
@@ -203,8 +240,10 @@ chart_sqlite_communities <- function(cn) {
     ordr <- c( "2018-19", "2021-22", "2022 (Feb)", "2022 (May)", "2022 (Aug)", 
                "2022 (Nov)", "2023 (Feb)", "2023 (May)", "2023 (Aug)", 
                "2023 (Nov)" )
-    save_chart("sol_culture", preproc = list(orderxd = ordr), conn = cn)
-    save_chart("sol_sport", preproc = list(orderxd = ordr), conn = cn)
+    save_chart("sol_culture", preproc = list(orderxd = ordr), 
+               opts = list(xFontsize = "11pt"), conn = cn)
+    save_chart("sol_sport", preproc = list(orderxd = ordr), 
+               opts = list(xFontsize = "11pt"), conn = cn)
     save_chart("coh", conn = cn)
     save_chart("htcrm", conn = cn)
     save_chart("sol_phtcrm", conn = cn)
@@ -217,6 +256,7 @@ chart_sqlite_communities <- function(cn) {
 
 chart_sqlite_trans_infr <- function(cn) {
     # save_for_SoL("tfl",   mvav = 7, section = sctn, cnn = cn)
+    save_chart("tfl", conn = cn)
     save_chart("sol_modesplit", opts = list(forceYDomain = list(0, 1)), conn = cn)
     # save_chart("tfl_wlkcyc", conn = cn)
     save_chart("sol_actvtrav", conn = cn)
@@ -275,6 +315,14 @@ chart_sqlite_inc_dep <- function(cn) {
                                 "Working Age", 
                                 "Pensioners")),
                conn = cn )
+    save_chart("sol_prspov", 
+               opts = list(horiz = TRUE, leglab = "legend"),
+               preproc = list(
+                   orderxd = c("Pensioners",
+                               "Working Age", 
+                               "Children",
+                               "All people" )),
+               conn = cn )
     fcl <- list(
         `Working Age Households on HB` = "#6da7de",
         `Working Age Households on HB and UC` = "#943fa6",
@@ -295,7 +343,7 @@ chart_sqlite_inc_dep <- function(cn) {
         `Not currently expected to work` = "#888888")
     pu_ordr <- c( "Searching for work",
                   "Looking for more work",
-                  "Working but on low earnings",
+                  "Working, but on low earnings",
                   "Not currently expected to work" )
     save_chart("sol_ucws", 
                opts = list( forcecols = fcl,cheight = 700 ),
@@ -356,13 +404,24 @@ chart_sqlite_inc_dep <- function(cn) {
         `Marginal low income` = "#6da7de"
     )
     save_chart("sol_matdep_c", 
-                 preproc = list(orderctg = ordr2),
+               opts = list(horiz = TRUE, forcecols = fcmdep),
+                 preproc = list(orderctg = ordr2, orderxd = rev(ons_order) ),
                  conn = cn)
+    save_chart("sol_matdep_o", 
+               opts = list(horiz = TRUE, leglab = "none"),
+                 preproc = list(orderxd = hoz_ordr),
+                 conn = cn)
+    save_chart("sol_fuelpov", conn = cn)
+    ordrfs <- c(`Very low` = "#00163e",
+        `Low` = "#065d8e",
+        `Marginal` = "#6da7de")
+    save_chart("sol_foodsec", 
+               opts = list(horiz = TRUE, forcecols = ordrfs),
+               preproc = list(orderxd = rev(ons_order)),
+               conn = cn)
     
     
     
-    # save_for_SoL("sol_matdep_o", 
-    #              hh = 700, ordr = hoz_ordr, section = sctn, cnn = cn )
 }
 
 
@@ -373,38 +432,36 @@ chart_econ <- function(cn) {
     save_chart("sol_fdi", opts = list(leglab = "legend"), 
                mopts = list(cheight = 700, multichart = "vsplit_line"), 
                conn = cn)
-    # save_chart("sol_fdi", conn = cn, hh= 800)
     save_chart("sol_busbd", conn = cn)
     save_chart("sol_llw", conn = cn)
     save_chart("sol_workforce", conn = cn)
     save_chart("sol_insemp", conn = cn)
     save_chart("sol_empgap", conn = cn)
-    # save_chart("sol_noloqual", conn = cn)
-    # save_chart("sol_neets", conn = cn)
     save_chart("sol_wfprof", conn = cn)
     save_chart("sol_empl", conn = cn)
     save_chart("sol_unempl", conn = cn)
     save_chart("sol_inact", conn = cn) 
     save_chart("sol_highqual", conn = cn)
-    save_chart("sol_fe_skills", 
-               opts = list(leglab = "legend"),
-               mopts = list(cheight = 700, multichart = "vsplit_line"), 
-               conn = cn)
-    ssv_ordr <- c("Total", "", "Education", "Transport & Storage", "Construction", 
-                  "Information & Communications","Arts & Other Services",
-                  "Manufacturing", "Health & Social Work","Wholesale & Retail",
-                  "Hotels & Restaurants", "Business Services", "Financial Services")
-    save_chart("sol_ssv", 
-               opts = list(cheight = 700, horiz = TRUE), 
-               mopts = list(cheight = 700, horiz = TRUE), 
-               preproc = list(orderxd = rev(ssv_ordr)),
-               conn = cn)
+    # save_chart("sol_fe_skills", 
+    #            opts = list(leglab = "legend"),
+    #            mopts = list(cheight = 700, multichart = "vsplit_line"), 
+    #            conn = cn)
+    # ssv_ordr <- c("Total", "", "Education", "Transport & Storage", "Construction", 
+    #               "Information & Communications","Arts & Other Services",
+    #               "Manufacturing", "Health & Social Work","Wholesale & Retail",
+    #               "Hotels & Restaurants", "Business Services", "Financial Services")
+    # save_chart("sol_ssv", 
+    #            opts = list(cheight = 700, horiz = TRUE), 
+    #            mopts = list(cheight = 700, horiz = TRUE), 
+    #            preproc = list(orderxd = rev(ssv_ordr)),
+    #            conn = cn)
 }
 
 chart_housing <- function(cn) {
     save_chart("sol_nh_epc", conn = cn)
     save_chart("sol_rnt_aff", conn = cn)
-    save_chart("sol_poss_clm", conn = cn)
+    save_chart("sol_hpi", conn = cn)
+    save_chart("sol_poss_clm", opts = list(forceDate = TRUE), conn = cn)
     save_chart("sol_hmlsdec", conn = cn)
     ordr <- c(
         "No second night out",
@@ -432,13 +489,16 @@ chart_health_wellbeing <- function(cn) {
                               orderxd = semh_ordr),
                conn = cn)     
     save_chart("sol_smoke", 
-               opts = list(suffix = "%", horiz = TRUE), 
+               opts = list(suffix = "%"), 
                preproc = list(orderctg = c("London", "England")),
                conn = cn)
     lfexpopts <- list(leglab = "legend", xFontsize = "11pt", yFontsize = "11pt")
     lfexpmopts <- list(multichart = "lines_horiz", subheads = list("Female (Years)", "Male (Years)"))
-    save_chart("sol_life_exp02", opts = lfexpopts, mopts = lfexpmopts, conn = cn)
-    save_chart("sol_life_exp64", opts = lfexpopts, mopts = lfexpmopts, conn = cn)
+    ppw <- list(wrap_text = TRUE)
+    save_chart("sol_life_exp02", opts = lfexpopts, mopts = lfexpmopts, 
+               preproc = ppw, conn = cn)
+    save_chart("sol_life_exp64", opts = lfexpopts, mopts = lfexpmopts, 
+               preproc = ppw, conn = cn)
     o75o <- c("__by_xd__",
               "Decile 1 (most deprived)",
               "Decile 2",
@@ -454,8 +514,9 @@ chart_health_wellbeing <- function(cn) {
     save_chart("sol_75_mort", opts = list(horiz = TRUE), preproc = list(orderxd = o75o), conn = cn)
     save_chart("sol_adult_mort", opts = list(horiz = TRUE), 
                preproc = list(orderctg = list("Female", "Male")), conn = cn)
+    # save_chart("sol_infmor", preproc = list(wrap_text = TRUE))
     save_chart("sol_prev_disease", opts = list(horiz = TRUE, suffix = "%"), conn = cn)
-    anxmopts <- list(multichart = "lines_horiz", subheads = list("Anxiety", "Satisfaction"))
+    anxmopts <- list(multichart = "lines_horiz", subheads = list("Satisfaction", "Anxiety"))
     save_chart("sol_adult_anx", opts = lfexpopts, mopts = anxmopts, conn = cn)
     # save_for_SoL("sol_semh", section = "Health and Wellbeing", 
     #              ordr = c(
@@ -485,7 +546,14 @@ chart_health_wellbeing <- function(cn) {
         `4` = "#3E5166",
         `5 - least deprived` = "#252C34"
     )
-    save_chart("sol_cancdep", opts = list(forcecols = cancols), conn = cn)
+    # save_chart("sol_cancdep", opts = list(forcecols = cancols), conn = cn)
+    save_chart("sol_hypert", conn = cn)
+    save_chart("sol_imms_l", 
+               opts = list(leglab = "legend"),
+               conn = cn)
+    save_chart("sol_imms_e", 
+               opts = list(leglab = "legend"),
+               conn = cn)
     
 }
 
@@ -502,7 +570,7 @@ chart_sqlite_crime <- function(cn) {
     save_chart("sol_tpo", conn = cn)
     save_chart("sol_fraud", conn = cn)
     save_chart("sol_asb", conn = cn)
-    save_chart("sol_hrsm", conn = cn)
+    # save_chart("sol_hrsm", conn = cn)
     save_chart("sol_dark", opts = list(silent_x = TRUE), conn = cn)
     save_chart("sol_vctsat", conn = cn)
     save_chart("sol_fair", conn = cn)
@@ -510,14 +578,16 @@ chart_sqlite_crime <- function(cn) {
 
 chart_sqlite_yp_education <- function(cn) {
     save_chart("sol_chmort", conn = cn)
+    save_chart("sol_inf_mort", preproc = list(wrap_text = TRUE), conn = cn)
     llg <- list(dots_London = "Year 6 London", 
                 dots_England = "Year 6 England", solid_London = "Reception London",
                 solid_England = "Reception England")
     save_chart("sol_obs", opts = list(leglab = "legend", lgg = llg), conn = cn)
     save_chart("sol_ylstsf", conn = cn)
+    save_chart("sol_ment_dis", conn = cn)
     save_chart("sol_eyp", conn = cn)
     save_chart("sol_feee", conn = cn)
-    save_chart("sol_feee", conn = cn) 
+    # save_chart("sol_feee", conn = cn) 
     save_chart("sol_mthr", conn = cn)
     save_chart("sol_eydev", conn = cn)
     
@@ -528,8 +598,9 @@ chart_sqlite_yp_education <- function(cn) {
                conn = cn)
     save_chart("sol_engmat", conn = cn)
     save_chart("sol_att8", conn = cn)
+    save_chart("sol_susp", preproc = list(wrap_text = TRUE), conn = cn)
     save_chart("sol_ftexcl", conn = cn)
-    save_chart("sol_prmexcl", conn = cn)
+    save_chart("sol_prmexcl",preproc = list(wrap_text = TRUE), conn = cn)
     save_chart("sol_ehcp", opts = list(cheight = 600), mopts = list(cheight = 600), 
                conn = cn)
     save_chart("sol_lvl3", conn = cn) # not working?

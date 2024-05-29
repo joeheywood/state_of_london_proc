@@ -3,7 +3,26 @@ library(stringr)
 library(dplyr)
 library(tidyr)
 
-run_narrow <- function() {
+run_narrow <- function(fl, sheet, xwch, dcode, ctgcol = 2, yvalcol = 3, xcol = 1) {
+    x <- read_excel(fl, sheet)
+    
+    ### find blank cols
+    blank_cols <- which(str_detect(names(x), "^\\.{3}\\w"))
+    if(blank_cols[2] == blank_cols[1] + 1) {
+        names(x)[1:(blank_cols[1] - 1)]
+        x <- x[, 1:(blank_cols[1] - 1)]
+    }
+    
+    if(xwch == 1) {
+        df <- data.frame(xvarchar = x[[xcol]], xvardt = NA, xwhich = xwch, text = "", dataset = dcode )
+    } else {
+        df <- data.frame(xvardt = x[[xcol]], xvarchar = "", xwhich = xwch, text = "", dataset = dcode)
+        
+    }
+    df$yvllb <- x[[ctgcol]]
+    df$yval <- x[[yvalcol]]
+    df$text <- ""
+    df
     
 }
 
@@ -33,7 +52,8 @@ run_wide <- function(fl, sheet, xwch, dcode, dtfmt = "%Y", rmNAx = TRUE, rmNAy =
     
     ### find blank cols
     blank_cols <- which(str_detect(names(x), "^\\.{3}\\w"))
-    if(blank_cols[2] == blank_cols[1] + 1) {
+    
+    if(length(blank_cols) > 0 & blank_cols[2] == blank_cols[1] + 1) {
         names(x)[1:(blank_cols[1] - 1)]
         x <- x[, 1:(blank_cols[1] - 1)]
     }

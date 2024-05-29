@@ -16,7 +16,7 @@ library(readxl)
 dt_fl <- file.path("C:/Users/joheywood/Greater London Authority/", 
                    "IU - Shared Projects/State of London report/", 
                    "Version 5 (June 2024)/Data/Transport and infrastructure/", 
-                   "Transport & infrastructure - new template.xlsx")
+                   "Transport & infrastructure.xlsx")
 
 # Function: Inserts data for Transport and Infrastructure chapter
 # Arguments:
@@ -26,6 +26,15 @@ run_transport_infrastructure_updates <- function(dt_fl, db_fl = "") {
     if(!file.exists(dt_fl)) stop("NO. That transport data file doesn't exist!")
     if(!file.exists(db_fl)) message("DB file doesn't exist. Probably fine")
     log <- ""
+    
+    
+    #### Demand #### 
+    tryCatch({
+        run_wide(dt_fl, "1. Demand for transport" , xwch = 2, dcode = "tfl") |>
+            insert_db(log = log, excfl = "SoL - Transport/Infrastructure")
+        
+        
+    }, error = function(e){error_log(e, "SoL - Transport/Infrastructure")}  )
     
     #### Mode Split ####
     tryCatch({
@@ -164,6 +173,8 @@ run_transport_infrastructure_updates <- function(dt_fl, db_fl = "") {
     
     #### Not spots ####
     tryCatch({
+        run_wide(dt_fl, "12. Superfast unavailability", xwch = 2, dcode = "sol_notspot") |>
+            insert_db(log = log, excfl = "SoL - Transport/Infrastructure")
         # read_excel(dt_fl, "12. Superfast unavailability", skip = 3) %>%
         #     select(xvardt = Date, London, `Rest of the UK`) %>%
         #     mutate(xvardt = as.Date(xvardt)) |>

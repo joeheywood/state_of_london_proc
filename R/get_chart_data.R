@@ -43,6 +43,7 @@ get_obs_chart <- function(dtst, opts, mopts = list(), pp = list()) {
         stack= dat$m$stack,
         high = dat$m$highlight
     )
+    # if()
     if("quarters" %in% names(dat$m)) {
         optsx$quarters <- TRUE
     }
@@ -63,6 +64,7 @@ get_obs_chart <- function(dtst, opts, mopts = list(), pp = list()) {
     }
     mopts$ttl <- dat$m$charttitle
     mopts$title <- dat$m$charttitle
+    mopts$includetitles <- FALSE
     mopts$sub <- dat$m$subtitle
     mopts$sol_chapter <- dat$m$sol_chapter
     mopts$sol_sub <- dat$m$sol_subsection
@@ -74,6 +76,12 @@ get_obs_chart <- function(dtst, opts, mopts = list(), pp = list()) {
             button_opts <- unique(dat$d$chart)
             
         }
+    }
+    if(length(unique(dat$d$b)) < 2) {
+        dat$d$b <- ""
+    }
+    if("forceDate" %in% names(opts)) {
+        optsx$type <- "date"
     }
     chrt <- robservable(
         "@joe-heywood-gla/gla-dpa-chart",
@@ -172,10 +180,10 @@ convert_q_date <- function(obj) {
     dat <- obj$d
     opts <- obj$m
     if("xd" %in% names(dat) == TRUE && 
-       all(str_detect(dat$xd, "20\\d{2} ?Q[1-4]+"))) {
+       all(str_detect(dat$xd, "^20\\d{2} ?(/|Q)[1-4]{1}$"))) {
         dat <- dat %>%
             mutate(xd = str_replace(xd, " ", "")) %>%
-            separate(xd, c("yr", "q"), sep = "Q") %>%
+            separate(xd, c("yr", "q"), sep = "(Q|/)") %>%
             mutate(xd = as.Date(paste0(yr, "-",
                                        (as.numeric(q)*3),
                                        "-01"))) 
@@ -190,6 +198,7 @@ convert_q_date <- function(obj) {
         datrange <- difftime(max(dat$xd), min(dat$xd), units = "weeks")
         uyr <- datrange > 140
         opts$useyear <- uyr
+        obj$u$useyear <- uyr
         dat$xd <- format(dat$xd, "%Y-%m-%d")
     }
     list(d = dat, m = opts, u = obj$u)
